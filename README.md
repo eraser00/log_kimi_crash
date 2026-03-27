@@ -46,9 +46,12 @@ kimi-k2.5在输出Bash命令的tool calls偶尔会触发首字母变成“:”�
 
 意外的是，即使使用Moonshot官方的API，依然可以触发这个错误；
 以我们录制到的数据为例：
+
 <img width="550px" src="/uploads/b5eb2c82fea346c387ef8d3dfcebee1e/image.png" alt="image.png" />
 
 可以看到，kimi-k2.5在第一次Bash调用的时候，触发了首字母变成“:”的错误
+
+<img width="550px" src="/uploads/6c63b844da33479bbc7dde9e5cff607d/image.png" alt="image.png" />
 
 而且这个错误不会自愈，后续调用过程当中模型的表现显著变差；
 
