@@ -1,0 +1,51 @@
+# 基于 xgrammar_dev 构建带覆盖率的新镜像
+FROM xgrammar_dev AS builder
+
+# 设置覆盖率构建环境变量
+ENV CMAKE_ARGS="-DXGRAMMAR_ENABLE_COVERAGE=ON"
+ENV XGRAMMAR_ENABLE_COVERAGE=ON
+
+# 安装 gcov 工具（通常已随 clang 安装）
+RUN apt-get update && apt-get install -y \
+    gcovr \
+    lcov \
+    && rm -rf /var/lib/apt/lists/*
+
+# 进入源码目录并重新构建（带覆盖率）
+WORKDIR /workspace/xgrammar
+
+# 清理之前的构建
+RUN rm -rf build dist *.egg-info
+
+# 重新安装带覆盖率的版本
+# 使用 --no-build-isolation 和 -e 进行可编辑安装
+RUN pip install --no-build-isolation -v -e . \
+    -C cmake.args=-DXGRAMMAR_ENABLE_COVERAGE=ON \
+    2>&1 | tee /tmp/build_coverage.log
+
+# 验证安装
+RUN python3 -c "import xgrammar; print('XGrammar with coverage installed successfully!')" && \
+    echo "Coverage build completed"
+
+# 最终镜像
+FROM xgrammar_dev
+
+# 安装覆盖率工具
+RUN apt-get update && apt-get install -y \
+    gcovr \
+    lcov \
+    && rm -rf /var/lib/apt/lists/*
+
+# 复制构建产物
+COPY --from=builder /workspace/xgrammar /workspace/xgrammar
+COPY --from=builder /usr/local/lib/python3.10/dist-packages/xgrammar* /usr/local/lib/python3.10/dist-packages/
+
+# 确保 Python 能找到 xgrammar
+ENV PYTHONPATH=/workspace/xgrammar/python:$PYTHONPATH
+
+WORKDIR /workspace/xgrammar
+
+# 验证覆盖率版本已安装
+RUN python3 -c "import xgrammar; print('XGrammar coverage version ready!')"
+
+CMD ["/bin/bash"]

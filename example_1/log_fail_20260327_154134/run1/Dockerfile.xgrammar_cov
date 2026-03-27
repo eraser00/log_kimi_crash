@@ -1,0 +1,28 @@
+FROM xgrammar_dev
+
+WORKDIR /workspace/xgrammar
+
+# 创建 build 目录配置以启用覆盖率
+# 强制使用 GCC 编译器（gcov 需要 GCC）
+RUN mkdir -p build && \
+    cat > build/config.cmake << 'EOF'
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+set(XGRAMMAR_BUILD_PYTHON_BINDINGS ON)
+set(XGRAMMAR_ENABLE_COVERAGE ON)
+set(XGRAMMAR_BUILD_CXX_TESTS OFF)
+set(XGRAMMAR_ENABLE_CPPTRACE OFF)
+set(XGRAMMAR_ENABLE_INTERNAL_CHECK OFF)
+set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_C_COMPILER gcc)
+EOF
+
+# 卸载旧版本并完全清理构建
+RUN pip uninstall xgrammar -y 2>/dev/null || true && \
+    rm -rf build/* && \
+    pip cache purge 2>/dev/null || true
+
+# 使用 GCC 重新构建并安装
+ENV CMAKE_ARGS="-DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc"
+RUN pip install -v -e . 2>&1
+
+WORKDIR /workspace

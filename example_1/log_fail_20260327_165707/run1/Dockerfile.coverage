@@ -1,0 +1,32 @@
+# 基于 xgrammar_dev 镜像构建带测试覆盖率的版本
+FROM xgrammar_dev:latest
+
+# 安装覆盖率工具
+RUN apt-get update && apt-get install -y \
+    gcovr \
+    lcov \
+    && rm -rf /var/lib/apt/lists/*
+
+# 清理之前的构建
+RUN rm -rf /workspace/xgrammar/build
+
+WORKDIR /workspace/xgrammar
+
+# 创建 config.cmake 文件来强制启用覆盖率选项
+# 这会覆盖 CMakeLists.txt 中的默认值
+RUN echo "set(XGRAMMAR_ENABLE_COVERAGE ON CACHE BOOL \"Enable coverage\" FORCE)" > config.cmake
+
+# 重新构建 xgrammar，启用覆盖率支持
+# 使用 --config-settings 传递 CMake 参数
+RUN pip install -e . --no-build-isolation -v \
+    --config-settings=cmake.build-type=Debug \
+    2>&1 | tee /tmp/build_cov.log
+
+# 验证覆盖率文件是否生成并测试导入
+RUN find /workspace/xgrammar -name "*.gcno" -o -name "*.gcda" 2>/dev/null | head -20 && \
+    python3 -c "import xgrammar; print('xgrammar with coverage support imported successfully')"
+
+WORKDIR /workspace
+
+# 添加标签
+LABEL description="xgrammar with code coverage support"
