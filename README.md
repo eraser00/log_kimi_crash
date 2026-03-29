@@ -69,6 +69,7 @@ kimi-k2.5在输出Bash命令的tool calls偶尔会触发首字母变成“:”�
 而且这个错误不会自愈，后续调用过程当中模型的表现显著变差；
 
 实在过于频繁了，顶不住了：
+
 <img width="550px" alt="企业微信截图_fcefc252-4cc3-46e5-a53c-2a5050c7ff43" src="https://github.com/user-attachments/assets/1baa4714-4d93-435a-bcb5-d7e1d806095a" />
 
 <img width="550px" alt="企业微信截图_0e3c8e38-1ae5-44df-aaf1-1fabb126f475" src="https://github.com/user-attachments/assets/af6e14cc-d752-4b58-be6b-81d80513c0ad" />
