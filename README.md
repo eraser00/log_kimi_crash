@@ -58,13 +58,13 @@ kimi-k2.5在输出Bash命令的tool calls偶尔会触发首字母变成“:”�
 
 [首个错误](example_1/log_fail_20260327_160750/0c2efe83-1c5a-48dd-a117-5f72ba3e9e06.jsonl#L6)
 
-<img width="550px" src="/uploads/b5eb2c82fea346c387ef8d3dfcebee1e/image.png" alt="image.png" />
+<img width="550px" alt="image" src="https://github.com/user-attachments/assets/5d1730fa-36b7-4ab4-b24c-e43e4169eee1" />
 
 可以看到，kimi-k2.5在第一次Bash调用的时候，触发了首字母变成“:”的错误
 
 [陷入灾难性重复](example_1/log_fail_20260327_160750/0c2efe83-1c5a-48dd-a117-5f72ba3e9e06.jsonl#L53)
 
-<img width="550px" src="/uploads/6c63b844da33479bbc7dde9e5cff607d/image.png" alt="image.png" />
+<img width="550px" alt="image" src="https://github.com/user-attachments/assets/49c9a971-bd22-44da-8544-08636ff9ed35" />
 
 而且这个错误不会自愈，后续调用过程当中模型的表现显著变差；
 
