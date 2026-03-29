@@ -37,6 +37,12 @@ example_1这里的本质代码缺陷是利用了LLM的一个常见的缺陷：
 最近常见的例子还有：
 openclaw plugin重构之后，文档没有更新导致coding agent自配置失败；
 
+## 具体案例example_3
+
+example_3这里的想测试的代码缺陷是针对冷门Coding Pattern和主流Pattern的冲突；
+
+[冷门的协程库](https://github.com/tecent/libco) 自己实现了一个不是非常标准的协程实现，导致和LLM当中主流的协程概念有冲突；导致LLM输出的程序写法容易crash
+
 ## 模型本身的缺陷导致的错误
 
 这里还有一个kimi-k2.5模型的内建缺陷导致的错误被触发的例子：
@@ -58,6 +64,13 @@ kimi-k2.5在输出Bash命令的tool calls偶尔会触发首字母变成“:”�
 <img width="550px" src="/uploads/6c63b844da33479bbc7dde9e5cff607d/image.png" alt="image.png" />
 
 而且这个错误不会自愈，后续调用过程当中模型的表现显著变差；
+
+实在过于频繁了，顶不住了：
+<img width="550px" alt="企业微信截图_fcefc252-4cc3-46e5-a53c-2a5050c7ff43" src="https://github.com/user-attachments/assets/1baa4714-4d93-435a-bcb5-d7e1d806095a" />
+
+<img width="550px" alt="企业微信截图_0e3c8e38-1ae5-44df-aaf1-1fabb126f475" src="https://github.com/user-attachments/assets/af6e14cc-d752-4b58-be6b-81d80513c0ad" />
+
+这导致了LLM的性能严重下降，经常thinking灾难性重复，不得不人工看一眼执行情况随着中断陷入该错误的步骤。太痛苦了
 
 ## 测试执行Debug
 
