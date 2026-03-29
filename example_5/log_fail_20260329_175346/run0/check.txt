@@ -1,0 +1,3 @@
+ <answer>no</answer>
+
+该测试用例中没有在 co_routine 当中创建 co_routine 的测试。所有的 `co_create` 调用都是在 `main` 函数中进行的，而 `test_routine` 协程函数内部仅执行了变量赋值和 `co_yield_ct()` 操作，并未在其中创建新的协程。

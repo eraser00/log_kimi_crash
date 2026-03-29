@@ -1,0 +1,3 @@
+ <answer>no</answer>
+
+这段代码只测试了基本的协程创建（`co_create`）、恢复（`co_resume`）和释放（`co_release`），以及协程切换（`co_yield_ct`）。`test_routine` 协程内部并没有创建新的协程。
